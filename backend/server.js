@@ -9,6 +9,7 @@ const app = express();
 
 // Router 
 const authRouter = require('./routes/authRoutes');
+const productRoutes = require('./routes/productRoutes');
 
 
 // Middleware
@@ -21,7 +22,8 @@ app.get('/', (req, res) => {
     res.send('Welcome to E-commerce API...');
 });
 // Routes
-app.use('/api/auth', authRouter)
+app.use('/api/auth', authRouter);
+app.use('/api/v1', productRoutes)
 
 
 // Connect to MongoDB
