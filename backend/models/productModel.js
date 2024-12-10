@@ -25,7 +25,7 @@ const productSchema = new mongoose.Schema(
       required: [true, 'Please enter product stock'],
       default: 1,
     },
-    ratings: {
+    averageRating: {
       type: Number,
       default: 0,
     },

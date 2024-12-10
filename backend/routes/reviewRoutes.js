@@ -1,26 +1,18 @@
-const mongoose = require('mongoose');
+const express = require('express');
+const { createReview, getReviews, deleteReview } = require('../controllers/reviewController');
+const { protect } = require('../middleware/auth'); // Assuming you have auth middleware
 
-const reviewSchema = new mongoose.Schema({
-  product: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Product',
-    required: true,
-  },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true,
-  },
-  rating: {
-    type: Number,
-    min: 1,
-    max: 5,
-    required: true,
-  },
-  comment: {
-    type: String,
-    required: true,
-  },
-}, { timestamps: true }); // Automatically creates createdAt and updatedAt
+const router = express.Router();
 
-module.exports = mongoose.model('Review', reviewSchema);
+// 📌 Create a review (POST) — authenticated users only
+router.post('/', protect, createReview);
+
+// 📌 Get all reviews for a product (GET)
+router.get('/:productId', getReviews);
+
+// 📌 Delete a review (DELETE) — authenticated users only
+router.delete('/:reviewId', protect, deleteReview);
+
+module.exports = router;
+
+
