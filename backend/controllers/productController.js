@@ -16,13 +16,37 @@ exports.createProduct = async (req, res) => {
 // 📌 2. Get All Products (For Users)
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
+    let sortBy = req.query.sort ? req.query.sort.split(',').join(' ') : '-createdAt';
+
+
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 10;
+    const skip = (page -1) * limit;
+    const totalPages = Math.ceil(totalProducts / limit);
+    
+    
+    const queryObj = {...req.query};
+    const excludeFields = ['page', 'sort', 'limit', 'fields'];
+    excludeFields.forEach((el)=> delete queryObj[el]);
+    
+    
+    let queryStr = JSON.stringify(queryObj);
+    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match)=> `$${match}`);
+    const totalProducts = await Product.countDocuments(JSON.parse(queryStr));
+
+    
+    const products = await Product.find(JSON.parse(queryStr)).sort(sortBy).skip(skip).limit(limit);
+
     res.status(200).json({
       success: true,
+      totalProducts,
+      totalPages,
+      currentPage: page,
+      count: products.length,
       products,
     });
   } catch (error) {
-    res.status(400).json({ success: false, message: error.message });
+    res.status(400).json({ success: false, message: error.message, errorStack: error.stack });
   }
 };
 
