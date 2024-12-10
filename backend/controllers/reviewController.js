@@ -63,7 +63,7 @@ exports.deleteReview = async (req, res) => {
       });
     }
 
-    await review.remove();
+    await review.deleteOne();
 
     // 📌 Remove the review reference from the product
     await Product.findByIdAndUpdate(review.product, { 

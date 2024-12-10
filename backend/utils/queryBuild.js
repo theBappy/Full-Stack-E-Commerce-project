@@ -2,6 +2,7 @@
  * 📌 1️⃣ Build Sort Helper
  * Extract and format the "sort" query
  */
+const Product = require('../models/productModel');
 exports.buildSort = (req) => {
     return req.query.sort ? req.query.sort.split(',').join(' ') : '-createdAt';
   };

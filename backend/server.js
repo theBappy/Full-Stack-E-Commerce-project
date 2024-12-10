@@ -10,6 +10,7 @@ const app = express();
 // Router 
 const authRouter = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
+const reviewRoutes = require('./routes/reviewRoutes');
 
 
 // Middleware
@@ -24,6 +25,7 @@ app.get('/', (req, res) => {
 // Routes
 app.use('/api/auth', authRouter);
 app.use('/api/v1', productRoutes)
+app.use('/api/v1/products/review', reviewRoutes)
 
 
 // Connect to MongoDB

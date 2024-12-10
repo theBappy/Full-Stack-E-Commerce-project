@@ -1,5 +1,6 @@
 const Product = require('../models/productModel');
 const { buildQuery, buildSort, buildPagination, countFilteredProducts } = require('../utils/queryBuild');
+const { cloudinary } = require('../middleware/imageUpload'); 
 
 // 📌 Create a new Product with Image Upload (Admin only)
 exports.createProduct = async (req, res) => {
@@ -107,3 +108,34 @@ exports.deleteProduct = async (req, res) => {
     res.status(400).json({ success: false, message: error.message });
   }
 };
+
+exports.uploadProductImage = async (req, res) => {
+  try {
+    const files = req.files;  // Get all uploaded files as an array
+    if (!files || files.length === 0) {
+      return res.status(400).json({ success: false, message: 'No image file uploaded!' });
+    }
+
+    // Prepare an array to hold image URLs
+    const imageUrls = [];
+
+    // Loop through the files and upload each one to Cloudinary
+    for (const file of files) {
+      const result = await cloudinary.uploader.upload(file.path, {
+        folder: 'products',
+        use_filename: true,
+      });
+      imageUrls.push(result.secure_url);  // Save the Cloudinary URL
+    }
+
+    // Respond with the uploaded image URLs
+    res.status(200).json({
+      success: true,
+      message: 'Images uploaded successfully!',
+      imageUrls,  // Return the array of image URLs
+    });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
