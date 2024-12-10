@@ -1,4 +1,5 @@
 const Product = require('../models/productModel');
+const { buildQuery, buildSort, buildPagination, countFilteredProducts } = require('../utils/queryBuild');
 
 // 📌 1. Create a New Product (Admin Only)
 exports.createProduct = async (req, res) => {
@@ -16,27 +17,22 @@ exports.createProduct = async (req, res) => {
 // 📌 2. Get All Products (For Users)
 exports.getAllProducts = async (req, res) => {
   try {
-    let sortBy = req.query.sort ? req.query.sort.split(',').join(' ') : '-createdAt';
-
-
-    const page = parseInt(req.query.page) || 1;
-    const limit = parseInt(req.query.limit) || 10;
-    const skip = (page -1) * limit;
+    // 1️⃣ Extract and format helper functions
+    const sortBy = buildSort(req);
+    const { page, limit, skip } = buildPagination(req);
+    const queryObj = buildQuery(req);
+    
+    // 2️⃣ Count the total products that match the query
+    const totalProducts = await countFilteredProducts(queryObj);
     const totalPages = Math.ceil(totalProducts / limit);
     
+    // 3️⃣ Find products using Mongoose query
+    const products = await Product.find(queryObj)
+      .sort(sortBy)
+      .skip(skip)
+      .limit(limit);
     
-    const queryObj = {...req.query};
-    const excludeFields = ['page', 'sort', 'limit', 'fields'];
-    excludeFields.forEach((el)=> delete queryObj[el]);
-    
-    
-    let queryStr = JSON.stringify(queryObj);
-    queryStr = queryStr.replace(/\b(gte|gt|lte|lt)\b/g, (match)=> `$${match}`);
-    const totalProducts = await Product.countDocuments(JSON.parse(queryStr));
-
-    
-    const products = await Product.find(JSON.parse(queryStr)).sort(sortBy).skip(skip).limit(limit);
-
+    // 4️⃣ Send back response
     res.status(200).json({
       success: true,
       totalProducts,
@@ -46,7 +42,11 @@ exports.getAllProducts = async (req, res) => {
       products,
     });
   } catch (error) {
-    res.status(400).json({ success: false, message: error.message, errorStack: error.stack });
+    res.status(500).json({ 
+      success: false, 
+      message: error.message,
+      errorStack: error.stack 
+    });
   }
 };
 
