@@ -1,19 +1,38 @@
 const Product = require('../models/productModel');
 const { buildQuery, buildSort, buildPagination, countFilteredProducts } = require('../utils/queryBuild');
 
-// 📌 1. Create a New Product (Admin Only)
+// 📌 Create a new Product with Image Upload (Admin only)
 exports.createProduct = async (req, res) => {
   try {
-    const product = await Product.create(req.body);
+    const { name, description, price, category, stock } = req.body;
+
+    // 📸 Handle Image Uploads
+    let images = [];
+    if (req.files) {
+      images = req.files.map((file) => ({
+        public_id: file.filename, // This is the public_id Cloudinary returns
+        url: file.path, // This is the URL of the image
+      }));
+    }
+
+    const product = await Product.create({
+      name,
+      description,
+      price,
+      category,
+      stock,
+      images,
+    });
+
     res.status(201).json({
       success: true,
+      message: 'Product created successfully',
       product,
     });
   } catch (error) {
     res.status(400).json({ success: false, message: error.message });
   }
 };
-
 // 📌 2. Get All Products (For Users)
 exports.getAllProducts = async (req, res) => {
   try {
