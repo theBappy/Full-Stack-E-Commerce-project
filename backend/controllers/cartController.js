@@ -82,7 +82,7 @@ exports.removeCartItem = async (req, res) => {
     const { id } = req.params; // id of the item to be removed
   
     try {
-      const cart = await Cart.findOneAndDelete(
+      const cart = await Cart.findOneAndUpdate(
         { 
           user: req.user.id 
         },
