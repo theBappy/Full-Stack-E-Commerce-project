@@ -5,6 +5,7 @@ const morgan = require('morgan');
 const path = require('path');
 
 
+
 const app = express();
 
 // Router 
@@ -12,6 +13,8 @@ const authRouter = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
+
 
 
 // Middleware
@@ -25,9 +28,11 @@ app.get('/', (req, res) => {
 });
 // Routes
 app.use('/api/auth', authRouter);
-app.use('/api/v1', productRoutes)
-app.use('/api/v1/products/review', reviewRoutes)
-app.use('/api/v1/productsCart', cartRoutes)
+app.use('/api/v1', productRoutes);
+app.use('/api/v1/products/review', reviewRoutes);
+app.use('/api/v1/productsCart', cartRoutes);
+app.use('/api/v1/order', paymentRoutes);
+
 
 
 // Connect to MongoDB
