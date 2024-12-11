@@ -13,6 +13,7 @@ const authRouter = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const cartRoutes = require('./routes/cartRoutes');
+const orderRoutes = require('./routes/orderRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 
 
@@ -31,7 +32,8 @@ app.use('/api/auth', authRouter);
 app.use('/api/v1', productRoutes);
 app.use('/api/v1/products/review', reviewRoutes);
 app.use('/api/v1/productsCart', cartRoutes);
-app.use('/api/v1/order', paymentRoutes);
+app.use('/api/v1/order', orderRoutes );
+app.use('/api/v1/orderpay', paymentRoutes );
 
 
 
