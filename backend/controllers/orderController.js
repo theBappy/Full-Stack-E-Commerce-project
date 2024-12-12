@@ -60,9 +60,12 @@ exports.getAllOrders = async (req, res) => {
 
 // ✅ 5️⃣ Update Order Status (Admin only)
 exports.updateOrderStatus = async (req, res) => {
+  const { status } = req.body;
+  const validStatuses = ['Processing', 'Shipped', 'Delivered', 'Cancelled'];
+  if(!validStatuses.includes(status)){
+    return res.status(400).json({message: 'Invalid status value'});
+  }
   try {
-    const { status } = req.body;
-
     const order = await Order.findById(req.params.id);
     if (!order) {
       return res.status(404).json({ message: 'Order not found' });
@@ -71,7 +74,7 @@ exports.updateOrderStatus = async (req, res) => {
     order.orderStatus = status;
     await order.save();
 
-    res.status(200).json({ success: true, order });
+    res.status(200).json({ success: true, message: 'Order status updated successfully', order });
   } catch (error) {
     res.status(500).json({ success: false, message: 'Failed to update order status', error });
   }
