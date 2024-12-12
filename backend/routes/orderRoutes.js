@@ -18,7 +18,7 @@ router.get('/:id', isAuthenticatedUser, getOrderById); // Get order by ID
 
 // Routes for admin
 router.get('/', isAuthenticatedUser, authorizeRoles, getAllOrders); // Get all orders (Admin only)
-router.put('/orders/:id', isAuthenticatedUser, authorizeRoles,  updateOrderStatus); // Update order status (Admin only)
+router.put('/orders/:id/status', isAuthenticatedUser,   updateOrderStatus); // Update order status (Admin only)
 router.delete('/orders/:id', isAuthenticatedUser, authorizeRoles, deleteOrder); // Delete an order (Admin only)
 
 
