@@ -1,15 +1,27 @@
-const stripe = require('stripe')
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 
-exports.processPayment = async (req, res) => {
+// ✅ 1️⃣ Create Payment Intent
+exports.createPaymentIntent = async (req, res) => {
   try {
-    const { amount } = req.body;
+    const { amount, currency = 'usd' } = req.body;
+
+    // 1. Create a Payment Intent on Stripe
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: amount * 100, // Stripe uses cents
-      currency: 'usd',
-      payment_method_types: ['card'],
+      amount: amount * 100, // Stripe works in cents (so $10 = 1000 cents)
+      currency, // USD, EUR, etc.
+      automatic_payment_methods: {
+        enabled: true, // Enable all automatic payment methods (card, etc.)
+      },
     });
-    res.status(200).json({ success: true, clientSecret: paymentIntent.client_secret });
+
+    // 2. Send client secret to the frontend
+    res.status(201).json({
+      success: true,
+      clientSecret: paymentIntent.client_secret,
+    });
   } catch (error) {
-    res.status(500).json({ message: 'Payment failed!', error });
+    console.error('Payment Intent Error:', error.message);
+    res.status(500).json({ success: false, message: 'Payment Intent Failed', error: error.message });
   }
 };
+
