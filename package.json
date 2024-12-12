@@ -2,14 +2,19 @@
   "name": "e-commerce",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "backend/server.js",
   "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run vite\"",
+    "server": "nodemon backend/server.js",
+    "vite": "vite",
+    "start": "node backend/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@stripe/stripe-js": "^5.2.0",
     "bcryptjs": "^2.4.3",
     "cloudinary": "^1.21.0",
     "cookie-parser": "^1.4.7",
@@ -26,8 +31,10 @@
     "stripe": "^17.4.0"
   },
   "devDependencies": {
+    "concurrently": "^9.1.0",
     "eslint": "^9.16.0",
     "nodemon": "^3.1.7",
-    "prettier": "^3.4.2"
+    "prettier": "^3.4.2",
+    "vite": "^6.0.3"
   }
 }

@@ -25,3 +25,31 @@ exports.createPaymentIntent = async (req, res) => {
   }
 };
 
+// Webhook Logic
+exports.stripeWebhook = (req, res) => {
+  const sig = req.headers['stripe-signature'];
+
+  let event;
+  try {
+    event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    return res.status(400).json({ message: `Webhook error: ${err.message}` });
+  }
+
+  // Handle the event
+  switch (event.type) {
+    case 'payment_intent.succeeded':
+      const paymentIntent = event.data.object;
+      console.log('PaymentIntent was successful:', paymentIntent.id);
+      break;
+    case 'payment_intent.payment_failed':
+      const failedPaymentIntent = event.data.object;
+      console.log('Payment failed:', failedPaymentIntent.id);
+      break;
+    default:
+      console.log(`Unhandled event type ${event.type}`);
+  }
+
+  res.status(200).json({ received: true });
+};
+
