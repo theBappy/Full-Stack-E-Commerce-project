@@ -1,50 +1,66 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState, useCallback } from 'react';
+import { fetchOrders, updateOrderStatus } from '../services/orderServices';
+import OrderCard from '../components/Ordercard';
 
 const AdminOrdersPage = () => {
+  const [loading, setLoading] = useState(true);
   const [orders, setOrders] = useState([]);
+  const [updatingOrder, setUpdatingOrder] = useState(null); // Tracks which order is being updated
 
+  // Fetch orders on component mount
   useEffect(() => {
-    const fetchOrders = async () => {
+    const getOrders = async () => {
       try {
-        const { data } = await axios.get('/api/v1/order/my-orders');
+        setLoading(true);
+        const data = await fetchOrders();
         setOrders(data);
       } catch (error) {
         console.error('Error fetching orders', error);
+      } finally {
+        setLoading(false);
       }
     };
-    fetchOrders();
+
+    getOrders();
   }, []);
 
-  const updateOrderStatus = async (orderId, status) => {
+  // Update order status
+  const handleStatusChange = useCallback(async (orderId, status) => {
     try {
-      await axios.put(`/api/v1/order/orders/${orderId}/status`, { status });
-      alert('Order status updated');
+      setUpdatingOrder(orderId); // Track the order being updated
+      await updateOrderStatus(orderId, status);
+      // Update the order's status locally in state
+      setOrders((prevOrders) => 
+        prevOrders.map(order => 
+          order._id === orderId ? { ...order, status } : order
+        )
+      );
+      alert('Order status updated successfully');
     } catch (error) {
       console.error('Error updating status', error);
+    } finally {
+      setUpdatingOrder(null); // Reset the updating status
     }
-  };
+  }, []);
+
+  if (loading) return <div className="spinner-container"><div className="spinner"></div></div>;
 
   return (
     <div>
       <h1>Admin Orders</h1>
-      <ul>
-        {orders.map((order) => (
-          <li key={order._id}>
-            <p>Order ID: {order._id}</p>
-            <p>Status: {order.status}</p>
-            <select 
-              onChange={(e) => updateOrderStatus(order._id, e.target.value)} 
-              value={order.status}
-            >
-              <option value="Processing">Processing</option>
-              <option value="Shipped">Shipped</option>
-              <option value="Delivered">Delivered</option>
-              <option value="Cancelled">Cancelled</option>
-            </select>
-          </li>
-        ))}
-      </ul>
+
+      {orders.length > 0 ? (
+        orders.map(order => (
+          <OrderCard 
+            key={order._id} 
+            order={order} 
+            isAdmin={true} 
+            onStatusChange={handleStatusChange} 
+          />
+        ))
+      ) : (
+        <p>No orders found.</p>
+      )}
     </div>
   );
 };
