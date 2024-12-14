@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import OrderCard from '../components/Ordercard'; 
+import { toast } from 'react-toastify';
 
 const MyOrdersPage = () => {
   const [loading, setLoading] = useState(true);
@@ -22,6 +23,18 @@ const MyOrdersPage = () => {
     fetchOrders();
   }, []);
 
+  // Cancel order
+  const cancelOrder = async (orderId) => {
+    try {
+      await axios.delete(`/api/v1/order/new/${orderId}`);
+      setOrders((prevOrders) => prevOrders.filter(order => order._id !== orderId));
+      toast.success('Order successfully canceled');
+    } catch (error) {
+      toast.error('Failed to cancel the order');
+      console.error('Error canceling order', error);
+    }
+  };
+  
   return (
     <div>
       <h1>My Orders</h1>

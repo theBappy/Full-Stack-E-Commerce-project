@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { fetchOrders, updateOrderStatus } from '../services/orderServices';
 import OrderCard from '../components/Ordercard';
+import { toast } from 'react-toastify';
 
 const AdminOrdersPage = () => {
   const [loading, setLoading] = useState(true);
@@ -25,23 +26,24 @@ const AdminOrdersPage = () => {
   }, []);
 
   // Update order status
-  const handleStatusChange = useCallback(async (orderId, status) => {
+const handleStatusChange = useCallback(async (orderId, status) => {
     try {
       setUpdatingOrder(orderId); // Track the order being updated
       await updateOrderStatus(orderId, status);
-      // Update the order's status locally in state
       setOrders((prevOrders) => 
         prevOrders.map(order => 
           order._id === orderId ? { ...order, status } : order
         )
       );
-      alert('Order status updated successfully');
+      toast.success('Order status updated successfully');
     } catch (error) {
+      toast.error('Failed to update order status');
       console.error('Error updating status', error);
     } finally {
-      setUpdatingOrder(null); // Reset the updating status
+      setUpdatingOrder(null);
     }
   }, []);
+
 
   if (loading) return <div className="spinner-container"><div className="spinner"></div></div>;
 
