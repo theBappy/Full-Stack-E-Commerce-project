@@ -1,23 +1,24 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
-import MyOrders from './pages/MyOrders';
-import AdminOrders from './pages/AdminOrders';
-import ProtectedRoute from './components/ProtectedRoute';
-import AdminDashboard from './pages/AdminDashboard';
-import { AdminRoute } from './components/AdminRoute';
+import Dashboard from './pages/Dashboard';
+import Profile from './pages/Profile';
+import OrderDetails from './pages/OrderDetails';
 
-const AppRoutes = () => (
-  <BrowserRouter>
-    <Routes>
-      <Route path="/" element={<Home />} />
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/my-orders" element={<ProtectedRoute><MyOrders /></ProtectedRoute>} />
-      <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
-      <Route path="/admin/orders" element={<ProtectedRoute><AdminOrders /></ProtectedRoute>} />
-    </Routes>
-  </BrowserRouter>
-);
+function AppRoutes() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/orders/:id" element={<OrderDetails />} />
+      </Routes>
+    </Router>
+  );
+}
 
 export default AppRoutes;
