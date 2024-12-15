@@ -1,11 +1,20 @@
 import axios from 'axios';
 
-export const loginUser = async (email, password) => {
-  const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/login`, { email, password });
+const API_URL = 'http://localhost:5000/api/v1/auth'
+
+export const registerUser = async (data) => {
+  const response = await axios.post(`${API_URL}/register`, userData);
   return response.data;
 };
 
-export const registerUser = async (data) => {
-  const response = await axios.post(`${import.meta.env.VITE_API_URL}/auth/register`, data);
+export const loginUser = async (userData) => {
+  const response = await axios.post(`${API_URL}/login`, userData);
   return response.data;
 };
+
+export const getUserProfile = async() => {
+  const response = await axios.post(`${API_URL}/profile`, {
+    headers: {Authorizatiation: ``}
+  })
+}
+
