@@ -9,6 +9,9 @@ import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function AppRoutes() {
+  if(loading){
+    return <div>Loading...</div> // Show loading spinner
+  }
   return (
     <Router>
       <Navbar />
@@ -16,6 +19,7 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/admin" element={<AdminRoute><AdminDashboard /></AdminRoute>} />
         <Route path="/dashboard" element={
           <ProtectedRoute>
             <Dashboard />
