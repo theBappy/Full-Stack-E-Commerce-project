@@ -1,15 +1,33 @@
-import React, { useContext } from 'react';
-import { AuthContext } from '../context/AuthContext';
+import React, { useEffect, useState } from 'react';
+import { getUserProfile } from '../services/AuthService';
 
 const Profile = () => {
-  const { user } = useContext(AuthContext);
+  const [profile, setProfile] = useState(null);
+
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const data = await getUserProfile();
+        setProfile(data);
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+
+    fetchProfile();
+  }, []);
 
   return (
     <div style={{ textAlign: 'center', padding: '20px' }}>
       <h2>Your Profile</h2>
-      <p>Update your email, password, and other information here.</p>
-      <p>Name: {user?.name}</p>
-      <p>Email: {user?.email}</p>
+      {profile ? (
+        <>
+          <p>Name: {profile.name}</p>
+          <p>Email: {profile.email}</p>
+        </>
+      ) : (
+        <p>Loading...</p>
+      )}
     </div>
   );
 };

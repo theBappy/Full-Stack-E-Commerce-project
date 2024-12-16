@@ -1,53 +1,52 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { loginUser } from '../services/authServices';
+import React, { useState, useContext } from 'react';
+import { AuthContext } from '../context/AuthContext';
+import { loginUser } from '../services/authService'; // Assuming you have this service
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate();
+  const [error, setError] = useState(null);
+  const { setUser } = useContext(AuthContext); // Access setUser from context
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await loginUser({ email, password });
-      if (response.success) {
-        localStorage.setItem('token', response.token);
-        alert('Login successful!');
-        navigate('/dashboard');
-      } else {
-        alert('Invalid credentials');
-      }
+      const response = await loginUser(email, password); // Call login API
+      localStorage.setItem('token', response.token); // Store token in localStorage
+
+      // Decode the user from the token
+      const decodedUser = jwt_decode(response.token); 
+      setUser(decodedUser.user); // Set the user in context
+      
+      // Redirect to dashboard or wherever
+      window.location.href = '/dashboard';
     } catch (error) {
-      console.error('Login error:', error);
+      setError('Invalid email or password');
     }
   };
 
   return (
-    <div style={{ textAlign: 'center', padding: '20px' }}>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <input 
-          type="email" 
-          placeholder="Email" 
-          value={email} 
-          onChange={(e) => setEmail(e.target.value)} 
-          required 
-        /><br/><br/>
-        
-        <input 
-          type="password" 
-          placeholder="Password" 
-          value={password} 
-          onChange={(e) => setPassword(e.target.value)} 
-          required 
-        /><br/><br/>
-        
-        <button type="submit">Login</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <input
+        type="email"
+        placeholder="Email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <button type="submit">Login</button>
+      {error && <p>{error}</p>}
+    </form>
   );
 };
 
 export default Login;
+
 

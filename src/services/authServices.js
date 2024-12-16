@@ -13,8 +13,10 @@ export const loginUser = async (userData) => {
 };
 
 export const getUserProfile = async() => {
+  const token = localStorage.getItem('token');
   const response = await axios.post(`${API_URL}/profile`, {
-    headers: {Authorizatiation: ``}
-  })
-}
+    headers: {Authorizatiation: `Bearer ${token}`}
+  });
+  return response.data;
+};
 

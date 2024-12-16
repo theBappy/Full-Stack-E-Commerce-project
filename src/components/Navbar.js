@@ -13,20 +13,51 @@ const Navbar = () => {
   };
 
   return (
-    <nav style={{ padding: '10px', backgroundColor: '#333', color: '#fff' }}>
-      <Link to="/" style={{ color: '#fff', marginRight: '10px' }}>Home</Link>
-      {!user ? (
-        <>
-          <Link to="/login" style={{ color: '#fff', marginRight: '10px' }}>Login</Link>
-          <Link to="/register" style={{ color: '#fff' }}>Register</Link>
-        </>
-      ) : (
-        <>
-          <Link to="/dashboard" style={{ color: '#fff', marginRight: '10px' }}>Dashboard</Link>
-          <Link to="/profile" style={{ color: '#fff', marginRight: '10px' }}>Profile</Link>
-          <button onClick={handleLogout} style={{ color: '#fff', background: 'red', border: 'none', padding: '5px 10px' }}>Logout</button>
-        </>
-      )}
+    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
+      <div className="container">
+        <Link to="/" className="navbar-brand">MyApp</Link>
+
+        <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+          <span className="navbar-toggler-icon"></span>
+        </button>
+
+        <div className="collapse navbar-collapse" id="navbarNav">
+          <ul className="navbar-nav ms-auto">
+            <li className="nav-item">
+              <Link to="/" className="nav-link">Home</Link>
+            </li>
+
+            {!user ? (
+              <>
+                <li className="nav-item">
+                  <Link to="/register" className="nav-link">Register</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/login" className="nav-link">Login</Link>
+                </li>
+              </>
+            ) : (
+              <>
+                <li className="nav-item">
+                  <Link to="/dashboard" className="nav-link">Dashboard</Link>
+                </li>
+                <li className="nav-item">
+                  <Link to="/profile" className="nav-link">Profile</Link>
+                </li>
+                <li className="nav-item">
+                  <button 
+                    onClick={handleLogout} 
+                    className="btn btn-danger btn-sm ms-2"
+                    style={{ marginTop: '7px' }} // optional style tweak
+                  >
+                    Logout
+                  </button>
+                </li>
+              </>      // <> </> React Fragment
+            )}
+          </ul>
+        </div>
+      </div>
     </nav>
   );
 };
