@@ -1,9 +1,16 @@
-export function setupCounter(element) {
-  let counter = 0
-  const setCounter = (count) => {
-    counter = count
-    element.innerHTML = `count is ${counter}`
-  }
-  element.addEventListener('click', () => setCounter(counter + 1))
-  setCounter(0)
-}
+import React, { useState } from 'react';
+
+const Counter = () => {
+  const [count, setCount] = useState(0);
+
+  const increment = () => setCount((prevCount) => prevCount + 1);
+
+  return (
+    <button onClick={increment} type="button">
+      Count is {count}
+    </button>
+  );
+};
+
+export default Counter;
+

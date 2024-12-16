@@ -1,5 +1,5 @@
 import { createContext, useState, useEffect } from 'react';
-import { getToken } from '../utils/tokenHelper'; // Keep using tokenHelper
+import { getToken } from '../utils/TokenHelper'; // Keep using tokenHelper
 import jwt_decode from 'jwt-decode'; // Don't forget to install jwt-decode
 
 export const AuthContext = createContext(); // Create the context

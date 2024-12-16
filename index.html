@@ -1,22 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Stripe Payment</title>
-    <script src="https://js.stripe.com/v3/"></script>
-</head>
-<body>
-    <h1>Stripe Payment</h1>
-    <form id="payment-form">
-        <label for="name">Name on  Card</label>
-        <input type="text" id="name" placeholder="Your Name" required />
-        <label for="card-element">Credit or Debit card</label>
-        <div id="card-element"><!-- Stripe will inject the card input here --></div>
-        <button id="submit" type="submit">Pay Now</button>
-        <div id="payment-message" role="alert"></div>
-      </form>
-      
-    <script src="main.js"></script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="./src/main.js"></script>
+  </body>
 </html>

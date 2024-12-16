@@ -1,0 +1,37 @@
+root/
+├── backend/                # Backend files and folders
+├── src/
+│   ├── assets/             # Images, icons, styles, etc.
+│   │   ├── images/
+│   │   │    ├── vite.svg
+│   │   │    └── javascript.svg
+│   │   └── styles/
+│   │        └── style.css
+│   ├── components/         # Reusable components
+│   │    ├── AdminRoute.js
+│   │    ├── Counter.js
+│   │    ├── Navbar.js
+│   │    └── Protected.js
+│   ├── context/            # Global app context (like AuthContext)
+│   │    └── AuthContext.js
+│   ├── pages/              # Pages for routing
+│   │    ├── Dashboard.js
+│   │    ├── Login.js
+│   │    ├── Register.js
+│   │    ├── Home.js
+│   │    ├── Profile.js
+│   │    └── Stripe.js
+│   ├── services/           # API calls and service logic
+│   │    └── AuthService.js
+│   ├── utils/              # Helper functions or utility files
+│   │    └── TokenHelper.js
+│   ├── App.js              # Root app component
+│   ├── main.js             # Entry file for React app (linked to index.html)
+│   ├── routes.js           # Centralized route definitions
+│   └── vite.config.js      # Vite configuration
+├── .env                    # Environment variables (API keys, etc.)
+├── .gitignore              # Ignore files in Git (like node_modules)
+├── index.html              # Root HTML (linked to src/main.js)
+├── package.json            # Project dependencies and scripts
+├── package-lock.json       # Lockfile for npm
+└── README.md               # Project documentation

@@ -1,6 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { registerUser } from '../services/authService'; // Assuming you have this service
+import { registerUser } from '../services/AuthService'; // Assuming you have this service
 
 const Register = () => {
   const [email, setEmail] = useState('');

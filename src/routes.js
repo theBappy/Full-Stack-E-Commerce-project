@@ -7,6 +7,7 @@ import Profile from './pages/Profile';
 import OrderDetails from './pages/OrderDetails';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
+import StripePage from './pages/Stripe';
 
 function AppRoutes() {
   if(loading){
@@ -35,6 +36,7 @@ function AppRoutes() {
             <OrderDetails />
           </ProtectedRoute>
           } />
+          <Route path="/stripe" element={<StripePage />} />
       </Routes>
     </Router>
   );
