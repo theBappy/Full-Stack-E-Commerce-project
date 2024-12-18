@@ -8,7 +8,7 @@ import Profile from './pages/Profile';
 import OrderDetails from './pages/OrderDetails';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
-import StripePage from './pages/Stripe';
+import StripePage from './pages/StripePayment';
 
 function AppRoutes() {
   return (
@@ -26,6 +26,11 @@ function AppRoutes() {
         <Route path="/profile" element={
           <ProtectedRoute>
             <Profile />
+          </ProtectedRoute>
+        } />
+        <Route path="/orders" element={
+          <ProtectedRoute>
+            <OrderDetails />
           </ProtectedRoute>
         } />
         <Route path="/orders/:id" element={

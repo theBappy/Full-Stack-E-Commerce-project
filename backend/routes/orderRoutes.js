@@ -14,7 +14,7 @@ const { isAuthenticatedUser, authorizeRoles } = require('../middleware/auth');
 // Routes for users
 router.post('/new', isAuthenticatedUser, createOrder); // Create a new order
 router.get('/my-orders', isAuthenticatedUser, getMyOrders); // Get all orders for logged-in user
-router.get('/:id', isAuthenticatedUser, getOrderById); // Get order by ID
+router.get('/my-orders/:id', isAuthenticatedUser, getOrderById); // Get order by ID
 
 // Routes for admin
 router.get('/', isAuthenticatedUser, authorizeRoles, getAllOrders); // Get all orders (Admin only)
