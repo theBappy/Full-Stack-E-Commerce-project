@@ -1,28 +1,22 @@
 import React, { useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom'; // Use useNavigate for redirection
 import { AuthContext } from '../context/AuthContext';
-import { loginUser } from '../services/AuthService'; // Assuming you have this service
-import jwt_decode from 'jwt-decode';  // Ensure jwt-decode is imported
+import { loginUser } from '../services/AuthService'; 
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
-  const { setUser } = useContext(AuthContext); // Access setUser from context
+  const navigate = useNavigate(); // Hook for navigation
+  const { login } = useContext(AuthContext); // Use login function from context
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Call login API
-      const response = await loginUser({ email, password });  // Assuming you send an object to the loginUser service
+      const response = await loginUser({ email, password });
       if (response && response.token) {
-        localStorage.setItem('token', response.token); // Store token in localStorage
-
-        // Decode the user from the token
-        const decodedUser = jwt_decode(response.token); 
-        setUser(decodedUser.user); // Set the user in context
-
-        // Redirect to dashboard or wherever
-        window.location.href = '/dashboard';
+        login(response.token); // Call login function from context to set user state
+        navigate('/dashboard'); // Use navigate instead of window.location.href
       } else {
         setError('Invalid email or password');
       }
@@ -40,7 +34,7 @@ const Login = () => {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
-        autoComplete="username"  // Added autocomplete for better UX
+        autoComplete="username"
       />
       <input
         type="password"
@@ -48,7 +42,7 @@ const Login = () => {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         required
-        autoComplete="current-password"  // Corrected autocomplete for password
+        autoComplete="current-password"
       />
       <button type="submit">Login</button>
       {error && <p style={{ color: 'red' }}>{error}</p>}
@@ -57,5 +51,6 @@ const Login = () => {
 };
 
 export default Login;
+
 
 

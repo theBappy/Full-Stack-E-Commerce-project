@@ -1,12 +1,21 @@
 import { createContext, useState, useEffect } from 'react';
-import { getToken } from '../utils/TokenHelper'; // Keep using tokenHelper
-import jwt_decode from 'jwt-decode'; // Don't forget to install jwt-decode
+import { getToken } from '../utils/TokenHelper';
+import jwt_decode from 'jwt-decode';
 
-export const AuthContext = createContext(); // Create the context
+export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); // To handle loading state when checking for tokens
+  const [loading, setLoading] = useState(true);
+
+  const login = (token) => {
+    console.log('Setting token in localStorage:', token); 
+    localStorage.setItem('token', token);
+    const decodedToken = jwt_decode(token);
+    console.log("Decoded User from token:", decodedToken.user);
+    setUser(decodedToken.user); 
+    setLoading(false); // Set loading to false after login
+  };
 
   const logout = () => {
     localStorage.removeItem('token');
@@ -14,32 +23,33 @@ export const AuthProvider = ({ children }) => {
   };
 
   useEffect(() => {
-    const token = getToken(); // Use token helper to get token
+    const token = getToken();
     if (token) {
       try {
         const decodedToken = jwt_decode(token);
-        const currentTime = Date.now() / 1000; // Get current time in seconds
+        console.log("Decoded token: ", decodedToken);
+        const currentTime = Date.now() / 1000;
         if (decodedToken.exp < currentTime) {
           console.log('Token expired');
-          localStorage.removeItem('token'); // Remove expired token
-          setUser(null); // Clear user state
+          logout();
         } else {
-          setUser(decodedToken.user); // Set user state with decoded user info
+          console.log("Setting user to:", decodedToken.user);
+          setUser(decodedToken.user);
         }
       } catch (error) {
         console.error('Failed to decode token:', error);
-        logout(); // If token is invalid, force logout
+        logout();
       }
     } else {
-      setUser(null); // No token, set user to null
+      setUser(null);
     }
-    setLoading(false); // Loading done after token check
-  }, []); // Empty array ensures this runs only once on mount
+    setLoading(false); // Loading done
+  }, []);
 
-  // Ensure `loading` is handled properly in your components (see the example below).
   return (
-    <AuthContext.Provider value={{ user, setUser, logout, loading }}>
+    <AuthContext.Provider value={{ user, setUser, login, logout, loading }}>
       {children}
     </AuthContext.Provider>
   );
 };
+

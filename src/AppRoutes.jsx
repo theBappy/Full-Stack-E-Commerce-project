@@ -1,6 +1,5 @@
-// AppRoutes.jsx or App.jsx (no need to add Router here)
-import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom'; // no need for BrowserRouter here
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Register from './pages/Register';
@@ -12,27 +11,13 @@ import ProtectedRoute from './components/ProtectedRoute';
 import StripePage from './pages/Stripe';
 
 function AppRoutes() {
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false); // After 2 seconds, set loading to false
-    }, 2000); // Simulate a 2-second loading time (replace this with your actual data fetching logic)
-
-    return () => clearTimeout(timer); // Cleanup the timeout on unmount
-  }, []);
-
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
   return (
     <>
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={
           <ProtectedRoute>
             <Dashboard />
