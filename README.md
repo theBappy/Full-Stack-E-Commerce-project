@@ -12,7 +12,7 @@ root
 │   │   ├── images -- javascript.svg, vite.svg
 │   │   └── styles -- styles.css
 │   ├── components
-│   │   └── Counter.jsx, AdminRoute.jsx, Navbar.jsx, ProtectedRoute.jsx
+│   │   └── Counter.jsx, AdminRoute.jsx, Navbar.jsx, ProtectedRoute.jsx , OrderList.jsx
 
 │   ├── context -- AuthContext.jsx
 │   ├── pages
@@ -20,9 +20,9 @@ root
 │   │   ├── Home.jsx
 │   │   ├── Login.jsx, Register.jsx
 │   │   ├── Profile.jsx
-│   │   └── Register.jsx, Stripe.jsx
+│   │   └── Register.jsx, StripePayment.jsx ,
         
-│   ├── services -- AuthService.jsx
+│   ├── services -- AuthService.jsx, OrderServivce.jsx, PaymentService.jsx
 │   ├── utils -- TokenHelper.jsx
 │   ├── App.jsx
 │   ├── main.jsx
