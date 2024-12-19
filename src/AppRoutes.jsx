@@ -9,6 +9,7 @@ import OrderDetails from './pages/OrderDetails';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 import WrappedStripePayment from './pages/StripePayment';
+import Cart from './pages/Cart';
 
 function AppRoutes() {
   return (
@@ -18,6 +19,7 @@ function AppRoutes() {
         <Route path="/" element={<Home />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/cart" element={<Cart />} />
         <Route path="/dashboard" element={
           <ProtectedRoute>
             <Dashboard />
