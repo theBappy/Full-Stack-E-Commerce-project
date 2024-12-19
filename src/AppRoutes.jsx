@@ -8,7 +8,7 @@ import Profile from './pages/Profile';
 import OrderDetails from './pages/OrderDetails';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
-import StripePage from './pages/StripePayment';
+import WrappedStripePayment from './pages/StripePayment';
 
 function AppRoutes() {
   return (
@@ -38,7 +38,7 @@ function AppRoutes() {
             <OrderDetails />
           </ProtectedRoute>
         } />
-        <Route path="/stripe" element={<StripePage />} />
+        <Route path="/stripe" element={<WrappedStripePayment />} />
         <Route path="*" element={<h1>404 - Page Not Found</h1>} />
       </Routes>
     </>

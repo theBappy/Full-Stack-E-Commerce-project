@@ -25,6 +25,24 @@ exports.createPaymentIntent = async (req, res) => {
   }
 };
 
+
+// Payment-Process
+exports.processPayment = async (req, res) => {
+  try {
+    const { paymentIntentId } = req.body;
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    if (paymentIntent.status === 'succeeded') {
+      // Update the order status in the database
+      // Example: await Order.update({ _id: orderId }, { status: 'Paid' });
+      res.status(200).json({ message: 'Payment successful', paymentIntent });
+    } else {
+      res.status(400).json({ message: 'Payment not successful' });
+    }
+  } catch (error) {
+    res.status(500).json({ message: 'Error processing payment', error });
+  }
+};
+
 // Webhook Logic
 exports.stripeWebhook = (req, res) => {
   const sig = req.headers['stripe-signature'];
