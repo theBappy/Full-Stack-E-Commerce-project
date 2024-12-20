@@ -1,10 +1,11 @@
+
 import React, { useState } from 'react';
-import BillingForm from '../components/BillingForm';
+import BillingForm from '../components/BillngForm';
 import CartSummary from '../components/CartSummary';
 import PaymentForm from '../components/PaymentForm';
 import { useNavigate } from 'react-router-dom';
 
-const Checkout = ({ cartItems }) => {
+const Checkout = ({ cartItems = [] }) => { // Default value for cartItems
   const [billingDetails, setBillingDetails] = useState(null);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
   const navigate = useNavigate();
@@ -21,6 +22,7 @@ const Checkout = ({ cartItems }) => {
     }, 2000);
   };
 
+  // Check if cartItems exists before calling reduce to prevent errors
   const totalAmount = cartItems.reduce((acc, item) => acc + item.quantity * item.price, 0);
 
   return (
@@ -38,3 +40,4 @@ const Checkout = ({ cartItems }) => {
 };
 
 export default Checkout;
+

@@ -8,8 +8,17 @@ export default defineConfig({
     proxy: {
       '/api/v1': 'http://localhost:5000', // Proxy backend
     },
-    open: true, // Automatically open the browser
-    historyApiFallback: true, // This will fallback to index.html for routes like /login /register
+    open: true,
+    historyApiFallback: true,
+  },
+  optimizeDeps: {
+    exclude: ['morgan', 'basic-auth', 'safe-buffer'] // Exclude backend modules
+  },
+  build: {
+    rollupOptions: {
+      external: ['morgan', 'basic-auth', 'safe-buffer'] // Mark these modules as "external"
+    }
   }
 });
+
 

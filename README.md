@@ -12,15 +12,15 @@ root
 │   │   ├── images -- javascript.svg, vite.svg
 │   │   └── styles -- styles.css
 │   ├── components
-│   │   └── Counter.jsx, AdminRoute.jsx, Navbar.jsx, ProtectedRoute.jsx , OrderList.jsx
+│   │   └── Counter.jsx, AdminRoute.jsx, Navbar.jsx, ProtectedRoute.jsx , OrderList.jsx , BilliForm.jsx, CartSummary.jsx, PaymentForm.jsx,ProductCard.jsx,ProductList.jsx
 
-│   ├── context -- AuthContext.jsx
+│   ├── context -- AuthContext.jsx, CartConextx.jsx
 │   ├── pages
 │   │   ├── Dashboard.jsx
 │   │   ├── Home.jsx
 │   │   ├── Login.jsx, Register.jsx
 │   │   ├── Profile.jsx
-│   │   └── Register.jsx, StripePayment.jsx ,
+│   │   └── Register.jsx, StripePayment.jsx , OrderDetails.jsx, Cart.Jsx
         
 │   ├── services -- AuthService.jsx, OrderServivce.jsx, PaymentService.jsx
 │   ├── utils -- TokenHelper.jsx

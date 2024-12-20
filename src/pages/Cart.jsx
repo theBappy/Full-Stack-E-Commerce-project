@@ -6,14 +6,20 @@ const Cart = () => {
   const { cartItems, totalPrice, removeFromCart, updateItemQuantity } = useCart();
   const navigate = useNavigate();
 
+  // Handle quantity change for cart items
   const handleQuantityChange = (id, quantity) => {
-    if (quantity <= 0) return; // Prevent negative quantity
+    if (isNaN(quantity) || quantity <= 0) return; // Prevent negative, zero, or non-numeric quantity
     updateItemQuantity(id, quantity);
   };
 
+  // Navigate to checkout page
   const handleCheckout = () => {
-    Navigate('/checkout');
-  }
+    if (cartItems.length === 0) {
+      alert('Your cart is empty. Add items before proceeding to checkout.');
+      return;
+    }
+    navigate('/checkout');
+  };
 
   return (
     <div className="container mt-5">
@@ -25,10 +31,16 @@ const Cart = () => {
         <>
           <ul className="list-group">
             {cartItems.map((item) => (
-              <li key={item.id} className="list-group-item d-flex justify-content-between align-items-center">
+              <li 
+                key={item._id} // Key prop should be unique
+                className="list-group-item d-flex justify-content-between align-items-center"
+              >
                 <div>
                   <strong>{item.name}</strong>
-                  <p>${item.price} x {item.quantity} = ${item.price * item.quantity}</p>
+                  <p>
+                    ${item.price.toLocaleString()} x {item.quantity} = 
+                    <strong> ${ (item.price * item.quantity).toLocaleString() }</strong>
+                  </p>
                 </div>
 
                 <div className="d-flex align-items-center">
@@ -38,6 +50,11 @@ const Cart = () => {
                     value={item.quantity} 
                     onChange={(e) => handleQuantityChange(item.id, Number(e.target.value))} 
                     min="1"
+                    onBlur={(e) => { 
+                      if (!e.target.value || e.target.value <= 0) { 
+                        handleQuantityChange(item.id, 1); // Reset to 1 if invalid
+                      }
+                    }}
                   />
                   <button 
                     className="btn btn-danger btn-sm" 
@@ -51,8 +68,10 @@ const Cart = () => {
           </ul>
 
           <div className="mt-4">
-            <h3>Total Price: ${totalPrice.toFixed(2)}</h3>
-            <button className="btn btn-success" onClick={handleCheckout}>Proceed to Checkout</button>
+            <h3>Total Price: <strong>${totalPrice.toFixed(2)}</strong></h3>
+            <button className="btn btn-success" onClick={handleCheckout}>
+              Proceed to Checkout
+            </button>
           </div>
         </>
       )}
@@ -61,5 +80,6 @@ const Cart = () => {
 };
 
 export default Cart;
+
 
 

@@ -26,7 +26,9 @@ app.use(express.json());
 app.use(morgan('dev'));
 app.use(cors({
     origin: 'http://localhost:5173', 
-    credentials: true
+    credentials: true,
+    methods: 'GET,POST',
+    allowedHeaders: 'Content-Type, Authorization',
 }));
 
 app.use(express.static(path.join(__dirname, 'public')));
