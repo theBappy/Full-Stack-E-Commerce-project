@@ -4,8 +4,8 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const path = require('path');
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
-
 const cors = require('cors');
+const expressRateLimit = require('express-rate-limit');
 
 
 
@@ -30,6 +30,15 @@ app.use(cors({
     methods: 'GET,POST',
     allowedHeaders: 'Content-Type, Authorization',
 }));
+// Rate Limiting Middleware (Global)
+const apiLimiter = expressRateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // Limit each IP to 100 requests per window
+    message: 'Too many requests from this IP, please try again later',
+});
+
+// Apply rate-limiting to all API routes
+app.use('/api/v1', apiLimiter);
 
 app.use(express.static(path.join(__dirname, 'public')));
 

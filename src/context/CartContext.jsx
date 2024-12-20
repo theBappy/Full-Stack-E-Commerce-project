@@ -89,12 +89,18 @@ const cartReducer = (state, action) => {
     }
 
     case 'CLEAR_CART': {
-      // Clear localStorage immediately
       localStorage.removeItem('cart');
       return {
         cartItems: [],
         totalItems: 0,
         totalPrice: 0,
+      };
+    }
+
+    case 'SYNC_CART': {
+      return {
+        ...state,
+        ...action.payload,
       };
     }
 
@@ -111,14 +117,28 @@ export const CartProvider = ({ children }) => {
     localStorage.setItem('cart', JSON.stringify(state));
   }, [state]);
 
+  // Sync cart across all tabs using localStorage
+  useEffect(() => {
+    const syncCartAcrossTabs = () => {
+      const syncedCartState = JSON.parse(localStorage.getItem('cart'));
+      if (syncedCartState) {
+        dispatch({ type: 'SYNC_CART', payload: syncedCartState });
+      }
+    };
+
+    // Listen for changes in localStorage
+    window.addEventListener('storage', syncCartAcrossTabs);
+
+    return () => {
+      window.removeEventListener('storage', syncCartAcrossTabs);
+    };
+  }, []);
+
   // Action Dispatchers
   const addToCart = (item) => dispatch({ type: 'ADD_TO_CART', payload: item });
-
   const removeFromCart = (id) => dispatch({ type: 'REMOVE_FROM_CART', payload: { id } });
-
   const updateItemQuantity = (id, quantity) => 
     dispatch({ type: 'UPDATE_ITEM_QUANTITY', payload: { id, quantity } });
-
   const clearCart = () => dispatch({ type: 'CLEAR_CART' });
 
   return (
@@ -139,6 +159,7 @@ export const CartProvider = ({ children }) => {
 };
 
 export const useCart = () => useContext(CartContext);
+
 
 
 
