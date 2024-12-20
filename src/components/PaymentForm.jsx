@@ -59,6 +59,7 @@ const PaymentForm = ({ onPaymentSuccess }) => {
         paymentStatus: paymentIntent.status,
         items: cartItems,
       };
+      localStorage.removeItem('cart');
       navigate('/order-confirmation', {state: {orderDetails}});
     } catch (err) {
       console.error('Payment error:', err.message);

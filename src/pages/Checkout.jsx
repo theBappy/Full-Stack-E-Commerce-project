@@ -17,9 +17,6 @@ const Checkout = ({ cartItems = [] }) => { // Default value for cartItems
   const handlePaymentSuccess = () => {
     setPaymentSuccess(true);
     // Optionally, save the order data in the backend here
-    setTimeout(() => {
-      navigate('/order-success'); // Redirect to a success page or dashboard after payment
-    }, 2000);
   };
 
   // Check if cartItems exists before calling reduce to prevent errors

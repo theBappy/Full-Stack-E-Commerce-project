@@ -12,6 +12,7 @@ import WrappedStripePayment from './pages/StripePayment';
 import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import OrderConfirmation from './pages/OrderConfirmation';
+import OrderHistory from './pages/OrderHistory';
 
 function AppRoutes() {
   return (
@@ -24,6 +25,8 @@ function AppRoutes() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/order-confirmation" element={<OrderConfirmation />} />
+        <Route path="/order-history" element={<OrderHistory/>} />
+       
         <Route path="/dashboard" element={
           <ProtectedRoute>
             <Dashboard />
