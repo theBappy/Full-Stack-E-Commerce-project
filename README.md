@@ -92,7 +92,7 @@ Prerequisites:
 
 1. Clone the Repository
 
-git clone https://github.com/your-username/e-commerce-project.git
+git clone [https://github.com/your-username/e-commerce-project.git](https://github.com/theBappy/Full-Stack-E-Commerce-project.git)
 cd e-commerce-project
 
 2. Backend Setup
